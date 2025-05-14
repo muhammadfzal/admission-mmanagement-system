@@ -2,6 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImg from '../../src/assets/ucp.png'
 import chairmanImg from '../../src/assets/chairman.png'
+import IPRS from '../../src/assets/IPRs-2024.png'
+import UCPimg from '../../src/assets/UCP-x-TCN.png'
+import imgName from '../../src/assets/moment_img.png'
+
 
 const Home = () => {
   const navigate = useNavigate();
@@ -34,7 +38,47 @@ const Home = () => {
     </h2> */}
   </div>
 </section>
+  
+  {/*Special Moments*/}
+<section>
+         <h1 className='font-bold text-2xl  md:text-4xl mx-20 text-left py-10 text-[#112C4F] '>In the Moment</h1>
+       <div className='flex flex-col md:flex-row gap-6'>
+         {/* Left Side - One Large Image */}
+         <div className=' w-1/2 mx-20 mb-10 h-[410px] bg-cover bg-center rounded'
+           style={{background: `url(${IPRS})`}}>
+            
+         </div>
+        
+       {/* Right - Two stacked images */}
+  <div className="w-full md:w-1/2 flex flex-col gap-6 mx-20">
+    <div
+      className="h-[195px] bg-cover bg-center rounded"
+      style={{ backgroundImage: `url(${UCPimg})` }}
+    ></div>
+    <div
+      className="h-[195px] bg-cover bg-center rounded"
+      style={{ backgroundImage: `url(${imgName})` }}
+    ></div>
+  </div>
+       </div>
+</section>
 
+         {/*Button*/} 
+      <button
+           type="submit"
+           className=" hover:bg-[#112C4F] text-white bg-[#112C4F]  py-4 px-8 mb-10 mt-10 rounded"
+        > More UCP News
+        </button>
+     {/*Course section*/}
+    <section>
+             <h1 className='font-bold text-2xl  md:text-4xl mx-20 text-left py-10 text-[#112C4F] '>Find a Course</h1>
+             <form>
+              <input
+              placeholder='Enter a Course name or Keyword here:'
+               className='w-1/2 border border-gray-300 py-3 px-3  rounded '
+              />
+             </form>
+    </section>
 
       {/* Chairman Message */}
      <section className="w-full bg-googleDark from-blue-900 to-blue-800 text-white py-12 px-4 md:px-20">
