@@ -2,11 +2,16 @@
 const AdmissionForm = () => {
   return (
     <div className="p-10">
-      <h2 className="text-3xl font-bold mb-6">Application Form For Admission</h2>
+
+      <h2 className="text-3xl font-bold mb-6">Admission Form...</h2>
+      {/* Your form goes here */}
+
+      <h2 className="text-3xl font-bold mb-6 text-[#112C4F]">Application Form For Admission</h2>
       <p className="text-gray-700 mb-4">Please fill out the admission form carefully with accurate information. All fields marked with 
          are mandatory for processing your application.</p>
        <div>
-        <h2 className="text-xl font-semibold mb-4">Admission at UCP University</h2>
+        <h2 className="text-xl font-semibold mb-4 text-[#112C4F]">Admission at UCP University</h2>
+
         <form>
            {/* First Row */}
         <div className="flex flex-col md:flex-row gap-4">
@@ -245,13 +250,13 @@ const AdmissionForm = () => {
          <div className="mt-8 text-left">
          <button
            type="submit"
-           className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
         >
           Submit Form
         </button>
    </div>
         </form>
         </div> 
+
     </div>
   );
 };

@@ -1,7 +1,16 @@
+
+
+const Footer = () => {
+  return (
+    <footer className="bg-googleDark text-white text-center py-4">
+      <p>&copy; {new Date().getFullYear()} University Admission Portal. All rights reserved.</p>
+
+
 import { FaMapMarkerAlt, FaPhoneAlt, FaEnvelope, FaFax } from 'react-icons/fa';
 import UCPlogo from '../../src/assets/ucp-logof.png';
 const Footer = () => {
   return (
+
 
 <footer className="bg-[#112C4F] text-white px-6 md:px-20 py-10">
 
