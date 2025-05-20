@@ -2,6 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import heroImg from '../../src/assets/ucp.png'
 import chairmanImg from '../../src/assets/chairman.png'
+import IPRS from '../../src/assets/IPRs-2024.png'
+import UCPimg from '../../src/assets/UCP-x-TCN.png'
+import imgName from '../../src/assets/moment_img.png'
+
 
 import moment1 from '../../src/assets/02.png'
 import moment2 from '../../src/assets/03.png'
@@ -54,9 +58,9 @@ const Home = () => {
     </h2> */}
   </div>
 </section>
-<<<<<<< Updated upstream
 
-=======
+
+
   
   {/*Special Moments*/}
 <section>
@@ -75,9 +79,6 @@ const Home = () => {
       style={{ backgroundImage: `url(${UCPimg})` }}
     ></div>
     <div
- 
-      className="h-[245px] bg-cover bg-center rounded"
-      className="h-[195px] bg-cover bg-center rounded"
 
       style={{ backgroundImage: `url(${imgName})` }}
     ></div>
@@ -85,50 +86,14 @@ const Home = () => {
        </div>
 </section>
 
+
+
          {/*Button*/} 
       <button
            type="submit"
            className=" hover:bg-[#112C4F] text-white bg-[#112C4F]  py-4 px-8 mb-10 mt-10 rounded"
         > More UCP News
         </button>
- Updated upstream
-
-  {/* Moments */}
-      <section className="py-10 px-4 md:px-20 bg-white">
-        <h3 className="text-3xl font-semibold mb-6">Moments</h3>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-2">
-         <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment8})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment2})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment6})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment7})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment9})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment3})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment1})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment4})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment10})`}}>    
-         </div>
-          <div className=' w-full  h-[200px] bg-cover bg-center rounded'
-           style={{background: `url(${moment5})`}}>    
-         </div>
-        </div>
-      </section>
      {/*Course section*/}
     <section>
              <h1 className='font-bold text-2xl  md:text-4xl mx-20 text-left py-10 text-[#112C4F] '>Find a Course</h1>
@@ -139,8 +104,6 @@ const Home = () => {
               />
              </form>
     </section>
->>>>>>> Stashed changes
-
 
       {/* Chairman Message */}
      <section className="w-full bg-googleDark from-blue-900 to-blue-800 text-white py-12 px-4 md:px-20">
