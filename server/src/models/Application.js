@@ -1,26 +1,63 @@
-const ApplicationSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  personal: {
+const mongoose = require("mongoose");
+const {
+  Branch,
+  Gender,
+  Relation,
+  EducationQualification,
+  AdmissionClass,
+} = require("../enums"); // <-- import all enums here
+
+const ParentInfoSchema = new mongoose.Schema(
+  {
+    relation: {
+      type: String,
+      enum: Object.values(Relation),
+      required: true,
+    },
     firstName: { type: String, required: true },
     lastName: { type: String, required: true },
-    dob: { type: Date, required: true },
-    gender: { type: String, enum: ["Male", "Female", "Other"] },
-  },
-  academic: {
-    highschool: { type: String, required: true },
-    grade: { type: String, required: true },
-    marks: { type: Number, required: true },
-  },
-  documents: [
-    {
-      name: { type: String },
-      url: { type: String },
+    email: { type: String, required: true },
+    phone: { type: String, required: true },
+    educationQualification: {
+      type: String,
+      enum: Object.values(EducationQualification),
+      required: true,
     },
-  ],
-  status: {
-    type: String,
-    enum: ["pending", "accepted", "rejected"],
-    default: "pending",
+    residentialAddress: { type: String, required: true },
   },
-  submittedAt: { type: Date, default: Date.now },
+  { _id: false }
+);
+
+const AdmissionFormSchema = new mongoose.Schema({
+  branch: {
+    type: String,
+    enum: Object.values(Branch),
+    required: true,
+  },
+  registrationNumber: { type: String, required: true, unique: true },
+  studentPhotoUrl: { type: String }, // store file URL or path
+
+  firstName: { type: String, required: true },
+  middleName: { type: String },
+  lastName: { type: String, required: true },
+
+  gender: {
+    type: String,
+    enum: Object.values(Gender),
+    required: true,
+  },
+  dateOfBirth: { type: Date, required: true },
+
+  admissionClass: {
+    type: String,
+    enum: Object.values(AdmissionClass),
+    required: true,
+  },
+
+  fatherInfo: { type: ParentInfoSchema, required: true },
+  motherInfo: { type: ParentInfoSchema, required: true },
 });
+
+const AdmissionFormModel = mongoose.model("AdmissionForm", AdmissionFormSchema);
+
+module.exports = AdmissionFormModel;

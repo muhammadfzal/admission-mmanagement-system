@@ -1,25 +1,22 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User"); // <--- Make sure this line exists
-const jwt = require('jsonwebtoken');
-require('dotenv').config();
-
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.signUp = async (req, res) => {
   try {
     const { name, mobile, email, password, role } = req.body;
     const existingUser = await User.findOne({ email });
-    console.log("Existing user:", existingUser);
 
     if (existingUser) {
       return res.status(403).json({ message: "Email already exists" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    console.log("Hashed password:", hashedPassword);
 
     const newUser = new User({
       name,
-      email, 
+      email,
       mobile,
       password: hashedPassword,
       role,
@@ -31,12 +28,11 @@ exports.signUp = async (req, res) => {
   } catch (err) {
     console.error("Error in signUp controller", err);
     res.status(500).json({ message: "Error in signUp" });
-
   }
 };
 exports.signIn = async (req, res) => {
   try {
-    const { email, password } = req.body; 
+    const { email, password } = req.body;
 
     // Check if user exists
     const user = await User.findOne({ email });
@@ -52,22 +48,21 @@ exports.signIn = async (req, res) => {
 
     // Generate JWT token
     const token = jwt.sign(
-      { userId: user._id, role: user.role },
+      { id: user._id, role: user.role },
       process.env.JWT_SECRET,
       { expiresIn: "1d" }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       token,
       user: {
+        id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
       },
     });
   } catch (err) {
-    console.error("Error in signIn", err);
-    res.status(500).json({ message: "Error in signIn" });
+    res.status(500).json({ message: "Server error" });
   }
 };
-
