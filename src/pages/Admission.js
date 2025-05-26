@@ -1,262 +1,230 @@
-// src/pages/AdmissionForm.jsx
+import { useState } from "react";
+import axios from "axios";
+
 const AdmissionForm = () => {
+  const initialFormData = {
+    branch: "",
+    registrationNumber: "",
+    studentPhotoUrl: "",
+    firstName: "",
+    middleName: "",
+    lastName: "",
+    gender: "",
+    dateOfBirth: "",
+    admissionClass: "",
+    fatherInfo: {
+      relation: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      educationQualification: "",
+      residentialAddress: "",
+    },
+    motherInfo: {
+      relation: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
+      educationQualification: "",
+      residentialAddress: "",
+    },
+  };
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name.startsWith("fatherInfo.") || name.startsWith("motherInfo.")) {
+      const [parent, field] = name.split(".");
+      setFormData((prev) => ({
+        ...prev,
+        [parent]: {
+          ...prev[parent],
+          [field]: value,
+        },
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/api/form/formdata",
+        formData
+      );
+      alert("Form submitted successfully");
+      setFormData(initialFormData);
+    } catch (err) {
+      console.error(err);
+
+      // Check if backend returned duplicate registration number error
+      if (
+        err.response &&
+        err.response.status === 403 &&
+        err.response.data?.message === "Regsitraion Number should be Unique"
+      ) {
+        alert(
+          "This registration number already exists. Please enter a unique one."
+        );
+      } else {
+        alert("Error submitting form. Please try again.");
+      }
+    }
+  };
+
   return (
     <div className="p-10">
-
-      <h2 className="text-3xl font-bold mb-6">Admission Form...</h2>
-      {/* Your form goes here */}
-
-      <h2 className="text-3xl font-bold mb-6 text-[#112C4F]">Application Form For Admission</h2>
-      <p className="text-gray-700 mb-4">Please fill out the admission form carefully with accurate information. All fields marked with 
-         are mandatory for processing your application.</p>
-       <div>
-        <h2 className="text-xl font-semibold mb-4 text-[#112C4F]">Admission at UCP University</h2>
-
-        <form>
-           {/* First Row */}
-        <div className="flex flex-col md:flex-row gap-4">
-           {/* Branch */}
-              <div className="flex-1">
-                <label className="block mb-1 font-medium text-left">Please Select Branch</label>
-                <select className="w-full border border-gray-300 rounded px-3 py-2">
-                  <option value="">choose...</option>
-                  <option value="CS">Computer Science</option>
-                  <option value="EE">Electrical Engineering</option>
-                  <option value="BBA">Business Administrations</option>                
-                </select>
-              </div>
-               {/* Registration Number */}
-               <div className="flex-1">
-                  <label className="block mb-1 font-medium text-left">Registration Number</label>
-                  <input
-                  type="text"
-                  placeholder="Enter Rsgistration number : "
-                  className="w-full border border-gray-300 rounded px-3 py-2"
-                  />
-               </div>
-                {/* Student Photo */}
-                <div className="flex-1">
-                     <label className="block mb-1 font-medium text-left">Photo of Student</label>
-                     <input
-                     type="file"
-                     className="w-full border border-gray-300 rounded px-3 py-2"
-                     />
-                </div>
-        </div>
-
-        <div className="flex flex-col md:flex-row gap-4" >
-          <div className="flex-1">
-          <label className="block mb-1 font-medium text-left">First Name</label>
-         <input
-         type="text"
-         placeholder="Enter Your Name : "
-         className="w-full border border-gray-300 rounded px-3 py-2"
-         />
-        </div>
-        <div className="flex-1">
-          <label className="block mb-1 font-medium text-left">Middel Name</label>
+      <h2 className="text-3xl font-bold mb-6">
+        Application Form For Admission
+      </h2>
+      <form onSubmit={handleSubmit}>
+        {/* General Info */}
+        <div className="flex gap-4">
+          <select
+            name="branch"
+            className="w-full border px-3 py-2"
+            value={formData.branch}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Choose...</option>
+            <option value="CS">Computer Science</option>
+            <option value="EE">Electrical Engineering</option>
+            <option value="BBA">Business Administrations</option>
+          </select>
           <input
-           type="text"
-           placeholder="Enter Your Middel Name : "
-           className="w-full border border-gray-300 rounded px-3 py-2"
+            type="text"
+            name="registrationNumber"
+            placeholder="Registration Number"
+            className="w-full border px-3 py-2"
+            value={formData.registrationNumber}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="studentPhotoUrl"
+            placeholder="Paste student photo URL"
+            className="w-full border px-3 py-2"
+            value={formData.studentPhotoUrl}
+            onChange={handleChange}
           />
         </div>
-            <div className="flex-1">
-          <label className="block mb-1 font-medium text-left">Last Name</label>
+
+        {/* Student Name */}
+        <div className="flex gap-4 mt-4">
           <input
-           type="text"
-           placeholder="Enter Your Last Name : "
-           className="w-full border border-gray-300 rounded px-3 py-2"
+            name="firstName"
+            placeholder="First Name"
+            className="w-full border px-3 py-2"
+            value={formData.firstName}
+            onChange={handleChange}
+            required
           />
-        </div> 
-     </div>
-     <div className="flex flex-col md:flex-row gap-4">
-      <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Select Gender</label>
-          <select className="w-full border border-gray-300 rounded px-3 py-2">
-            <option value="">--Select--</option>
+          <input
+            name="middleName"
+            placeholder="Middle Name"
+            className="w-full border px-3 py-2"
+            value={formData.middleName}
+            onChange={handleChange}
+          />
+          <input
+            name="lastName"
+            placeholder="Last Name"
+            className="w-full border px-3 py-2"
+            value={formData.lastName}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        {/* Gender, DOB, Class */}
+        <div className="flex gap-4 mt-4">
+          <select
+            name="gender"
+            className="w-full border px-3 py-2"
+            value={formData.gender}
+            onChange={handleChange}
+            required
+          >
+            <option value="">--Select Gender--</option>
             <option value="Male">Male</option>
-            <option value="Femalle">Female</option>
+            <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
-      </div>      
-      <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Date of Birth</label>
-           <input
+          <input
             type="date"
-            className="w-full border border-gray-300 rounded px-3 py-2"
-            />
-      </div>
-        <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Admission To Class</label>
-          <select className="w-full border border-gray-300 rounder px-3 py-2">
+            name="dateOfBirth"
+            className="w-full border px-3 py-2"
+            value={formData.dateOfBirth}
+            onChange={handleChange}
+            required
+          />
+          <select
+            name="admissionClass"
+            className="w-full border px-3 py-2"
+            value={formData.admissionClass}
+            onChange={handleChange}
+            required
+          >
             <option value="">-- Select Program --</option>
-             <option value="BSCS">BSCS</option>
-             <option value="BBA">BBA</option>
-             <option value="BSSE">BS Software Engineering</option>
-             <option value="MBA">MBA</option>
-             <option value="MSCS">MSCS</option>
-             <option value="PhD">PhD</option>
-          </select>
-      </div> 
-      </div>
-      <h1 className="font-bold py-5 text-left">*Parents/Guardian</h1>
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <label className="block mb-1 font-medium text-left">Chosse Relation</label>
-          <select className="w-full border border-gray-300 rounded px-3 py-2">
-            <option>--Select--</option>
-            <option>Father</option>
-            <option>Mother</option>
-            <option>Brother</option>
-            <option>Sister</option>
+            <option value="BSCS">BSCS</option>
+            <option value="BBA">BBA</option>
+            <option value="BSSE">BS Software Engineering</option>
+            <option value="MBA">MBA</option>
+            <option value="MSCS">MSCS</option>
+            <option value="PhD">PhD</option>
           </select>
         </div>
-        <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Father First Name</label>
-         <input
-         type="text"
-         placeholder="Enter First Name : "
-         className="w-full border border-gray-300 rounded px-3 py-2"
-         />
-        </div>
-          <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Father Last Name</label>
-         <input
-         type="text"
-         placeholder="Enter Last Name : "
-         className="w-full border border-gray-300 rounded px-3 py-2"
-         />
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-4">
-         {/* Email Address */}
-          <div className="flex-1">
-             <label className="block mb-1 font-medium text-left">Email Address : </label>
-           <input 
-           type="email"
-           placeholder="Enter Your Email"
-           className="w-full border border-gray-300 rounded px-3 py-2"
-           />
-          </div>
-           {/* Phone Number */}
-          <div className="flex-1">
-             <label className="block mb-1 font-medium text-left">Phone No. : </label>
-           <input 
-           type="number"
-           placeholder="Enter Your Phone No."
-           className="w-full border border-gray-300 rounded px-3 py-2"
-           />
-          </div>
-            {/* Education Qualification */}
-          <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Education Qualification : </label>
-           <select  className="w-full border border-gray-300 rounded px-3 py-2">
-           <option value="">-- Select Qualification --</option>
-           <option value="Matric">Matric</option>
-           <option value="Intermediate">Intermediate</option>
-           <option value="Bachelor">Bachelor</option>
-           <option value="Master">Master</option>
-           <option value="PhD">PhD</option>
-           <option value="M.phil">M.phil</option>
-           <option value="Other">Other</option>
-           </select>
-          </div>
-      </div>
-         <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Residential Addres of the Parent/Guardian: </label>
-           <textarea
-           placeholder="Please type tour address here..."
-           className="w-full  border border-gray-300 rounded px-3 py-2"
-           > 
-           </textarea>
-          </div>
-         </div>
-         {/* Mother Information */}
-          <h1 className="font-bold py-5 text-left">*Parents/Guardian</h1>
-      <div className="flex flex-col md:flex-row gap-4">
-        <div className="flex-1">
-          <label className="block mb-1 font-medium text-left">Chosse Relation</label>
-          <select className="w-full border border-gray-300 rounded px-3 py-2">
-            <option>--Select--</option>
-            <option>Father</option>
-            <option>Mother</option>
-            <option>Brother</option>
-            <option>Sister</option>
-          </select>
-        </div>
-        <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Mother First Name</label>
-         <input
-         type="text"
-         placeholder="Enter First Name : "
-         className="w-full border border-gray-300 rounded px-3 py-2"
-         />
-        </div>
-          <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Mother Last Name</label>
-         <input
-         type="text"
-         placeholder="Enter Last Name : "
-         className="w-full border border-gray-300 rounded px-3 py-2"
-         />
-        </div>
-      </div>
-      <div className="flex flex-col md:flex-row gap-4">
-         {/* Email Address */}
-          <div className="flex-1">
-             <label className="block mb-1 font-medium text-left">Email Address : </label>
-           <input 
-           type="email"
-           placeholder="Enter Your Email"
-           className="w-full border border-gray-300 rounded px-3 py-2"
-           />
-          </div>
-           {/* Phone Number */}
-          <div className="flex-1">
-             <label className="block mb-1 font-medium text-left">Phone No. : </label>
-           <input 
-           type="number"
-           placeholder="Enter Your Phone No."
-           className="w-full border border-gray-300 rounded px-3 py-2"
-           />
-          </div>
-            {/* Education Qualification */}
-          <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Education Qualification : </label>
-           <select  className="w-full border border-gray-300 rounded px-3 py-2">
-           <option value="">-- Select Qualification --</option>
-           <option value="Matric">Matric</option>
-           <option value="Intermediate">Intermediate</option>
-           <option value="Bachelor">Bachelor</option>
-           <option value="Master">Master</option>
-           <option value="PhD">PhD</option>
-           <option value="M.phil">M.phil</option>
-           <option value="Other">Other</option>
-           </select>
-          </div>
-      </div>
-         <div className="flex flex-col md:flex-row gap-4">
-          <div className="flex-1">
-           <label className="block mb-1 font-medium text-left">Residential Addres of the Parent/Guardian: </label>
-           <textarea
-           placeholder="Please type tour address here..."
-           className="w-full  border border-gray-300 rounded px-3 py-2"
-           > 
-           </textarea>
-          </div>
-         </div>
-         <div className="mt-8 text-left">
-         <button
-           type="submit"
-        >
-          Submit Form
-        </button>
-   </div>
-        </form>
-        </div> 
 
+        {/* Father's Info */}
+        <h2 className="mt-6 font-bold text-lg">Father's Info</h2>
+        <div className="flex gap-4 flex-wrap">
+          {Object.entries(formData.fatherInfo).map(([key, val]) => (
+            <input
+              key={key}
+              name={`fatherInfo.${key}`}
+              placeholder={`Father ${key}`}
+              value={val}
+              onChange={handleChange}
+              className="w-[32%] border px-3 py-2 mt-2"
+              required
+            />
+          ))}
+        </div>
+
+        {/* Mother's Info */}
+        <h2 className="mt-6 font-bold text-lg">Mother's Info</h2>
+        <div className="flex gap-4 flex-wrap">
+          {Object.entries(formData.motherInfo).map(([key, val]) => (
+            <input
+              key={key}
+              name={`motherInfo.${key}`}
+              placeholder={`Mother ${key}`}
+              value={val}
+              onChange={handleChange}
+              className="w-[32%] border px-3 py-2 mt-2"
+              required
+            />
+          ))}
+        </div>
+
+        <button
+          type="submit"
+          className="mt-6 bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded"
+        >
+          Submit
+        </button>
+      </form>
     </div>
   );
 };

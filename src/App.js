@@ -1,32 +1,78 @@
 import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import AdmissionForm from "./pages/Admission"
-import ContactPage from "./pages/ContactPage";
-import About from "./pages/About";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import AdmissionForm from "./pages/Admission";
+import AdminDashboard from "./pages/dashboard";
+import PrivateRoute from "./privateRouts";
+
+function PublicLayout({ children }) {
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
+  );
+}
 
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <Header />
+      <Routes>
+        {/* Public Routes */}
+        <Route
+          path="/"
+          element={
+            <PublicLayout>
+              <Home />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/sign-up"
+          element={
+            <PublicLayout>
+              <SignUp />
+            </PublicLayout>
+          }
+        />
+        <Route
+          path="/sign-in"
+          element={
+            <PublicLayout>
+              <SignIn />
+            </PublicLayout>
+          }
+        />
 
-        <Routes>
-         <Route path="/" element={<Home />} />
-          <Route path="/sign-up" element={<SignUp />} />
-          <Route path="/sign-in" element={<SignIn />} />
-          <Route path="/admission-form" element={<AdmissionForm />} />
-          <Route path="/contact-us" element={<ContactPage />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
+        {/* Protected route for students */}
+        <Route
+          path="/admission-form"
+          element={
+            <PrivateRoute allowedRole="user">
+              <PublicLayout>
+                <AdmissionForm />
+              </PublicLayout>
+            </PrivateRoute>
+          }
+        />
 
-        <Footer />
-      </div>
+        {/* Protected route for admin */}
+        <Route
+          path="/admin/dashboard"
+          element={
+            <PrivateRoute allowedRole="admin">
+              <AdminDashboard />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
     </Router>
   );
 }
