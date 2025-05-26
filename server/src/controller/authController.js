@@ -1,5 +1,5 @@
-const bcrypt = require("bcrypt");
-const User = require("../models/User"); // <--- Make sure this line exists
+const bcrypt = require("bcrypt");  //bcrypt is used to secure passwords by turning them into hashed (encrypted) text.
+const User = require("../models/User"); // <--- Make sure this line exists  // It allows you to create new users, find users, or check user data from your database.
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 

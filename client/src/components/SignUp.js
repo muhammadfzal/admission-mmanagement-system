@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate();  
   const [data, setData] = useState({
     name: "",
     mobile: "",
@@ -21,7 +21,7 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e) => {    
     e.preventDefault();
     setLoading(true);
     setError("");
