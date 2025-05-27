@@ -20,7 +20,6 @@ function PublicLayout({ children }) {
   );
 }
 
-
 function App() {
   return (
     <Router>
